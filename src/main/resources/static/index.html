@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Course Management</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header><h1 style="margin:0;font-size:22px;">Student Course Management System</h1></header>
+<nav>
+  <button data-tab="dashboard" class="active">Dashboard</button>
+  <button data-tab="students">Students</button>
+  <button data-tab="courses">Courses</button>
+  <button data-tab="enrollments">Enrollments</button>
+</nav>
+<div id="msg"></div>
+
+<main>
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="active">
+    <div class="cards">
+      <div class="card"><h2 id="totStudents">0</h2><p>Total Students</p></div>
+      <div class="card"><h2 id="totCourses">0</h2><p>Total Courses</p></div>
+      <div class="card"><h2 id="totEnrollments">0</h2><p>Total Enrollments</p></div>
+    </div>
+    <h3>Course-wise Enrollment</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Course</th><th>Enrolled Students</th></tr></thead>
+        <tbody id="dashRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- STUDENTS -->
+  <section id="students">
+    <form id="studentForm" novalidate>
+      <h3 id="studentFormTitle" style="margin-top:0">Add Student</h3>
+      <div class="row">
+        <label>Name *<input id="sName" required></label>
+        <label>Email *<input id="sEmail" type="email" required></label>
+        <label>Phone * (10 digits)<input id="sPhone" required pattern="[0-9]{10}" maxlength="10"></label>
+      </div>
+      <div class="row">
+        <label>Course *<select id="sCourse" required></select></label>
+        <label>Date of Joining *<input id="sDate" type="date" required></label>
+      </div>
+      <button class="primary" type="submit" id="studentSubmit">Add Student</button>
+      <button class="secondary" type="button" id="studentCancel" style="display:none">Cancel</button>
+    </form>
+
+    <div class="panel">
+      <input id="search" placeholder="Search by name or email...">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Courses</th><th>Actions</th></tr></thead>
+        <tbody id="studentRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- COURSES -->
+  <section id="courses">
+    <form id="courseForm" novalidate>
+      <h3 style="margin-top:0">Add Course</h3>
+      <div class="row">
+        <label>Course Name *<input id="cName" required></label>
+        <label>Duration * (e.g. 3 months)<input id="cDuration" required></label>
+      </div>
+      <button class="primary" type="submit">Add Course</button>
+    </form>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Course Name</th><th>Duration</th></tr></thead>
+        <tbody id="courseRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ENROLLMENTS -->
+  <section id="enrollments">
+    <form id="enrollForm" novalidate>
+      <h3 style="margin-top:0">Enroll Student in Course</h3>
+      <div class="row">
+        <label>Student *<select id="eStudent" required></select></label>
+        <label>Course *<select id="eCourse" required></select></label>
+      </div>
+      <button class="primary" type="submit">Enroll</button>
+    </form>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Student</th><th>Email</th><th>Course</th><th>Duration</th><th>Enrolled On</th></tr></thead>
+        <tbody id="enrollRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>
