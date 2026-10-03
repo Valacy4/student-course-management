@@ -15,13 +15,13 @@ A full stack web application to manage students, courses and course enrollments.
 
 ## Tech Stack
 
-| Layer     | Technology                                   |
-|-----------|----------------------------------------------|
-| Frontend  | HTML, CSS, JavaScript (Fetch API)            |
-| Backend   | Java 17, Spring Boot 3.3, Spring Web         |
-| Data      | Spring Data JPA (Hibernate), MySQL 8         |
-| Validation| Jakarta Bean Validation                      |
-| Build     | Maven                                        |
+| Layer      | Technology                             |
+|------------|----------------------------------------|
+| Frontend   | HTML, CSS, JavaScript (Fetch API)      |
+| Backend    | Java 17, Spring Boot 3.3, Spring Web   |
+| Data       | Spring Data JPA (Hibernate), MySQL 8   |
+| Validation | Jakarta Bean Validation                |
+| Build      | Maven                                  |
 
 ## Prerequisites
 
@@ -32,8 +32,9 @@ A full stack web application to manage students, courses and course enrollments.
 ## Setup
 
 1. Clone the repository:
+
 ```bash
-   git clone <your-repository-url>
+   git clone https://github.com/Valacy4/student-course-management.git
    cd student-course-management
 ```
 
@@ -41,17 +42,19 @@ A full stack web application to manage students, courses and course enrollments.
 
 3. Set the database credentials as environment variables:
 
-   | Variable      | Required | Default | Description        |
-   |---------------|----------|---------|--------------------|
-   | `DB_PASSWORD` | Yes      | none    | MySQL password     |
-   | `DB_USER`     | No       | `root`  | MySQL username     |
+   | Variable      | Required | Default | Description    |
+   |---------------|----------|---------|----------------|
+   | `DB_PASSWORD` | Yes      | none    | MySQL password |
+   | `DB_USER`     | No       | `root`  | MySQL username |
 
    Windows (Command Prompt, then reopen your terminal or IDE):
+
 ```
    setx DB_PASSWORD "your_mysql_password"
 ```
 
    macOS / Linux:
+
 ```bash
    export DB_PASSWORD="your_mysql_password"
 ```
@@ -60,12 +63,11 @@ A full stack web application to manage students, courses and course enrollments.
 
 4. Run the application:
 
-   From the command line:
 ```bash
    mvn spring-boot:run
 ```
 
-   From Eclipse: right-click `StudentCourseApplication.java` and choose Run As, Java Application.
+   Or from Eclipse: right-click `StudentCourseApplication.java` and choose Run As, Java Application.
 
 5. Open http://localhost:8080 in your browser.
 
@@ -96,37 +98,42 @@ src/main/java/com/scms
 src/main/resources
 ├── application.properties
 └── static
-    └── index.html
+    ├── index.html
+    ├── style.css
+    └── script.js
 ```
 
 ## Database Design
 
-| Table         | Columns                                                                 |
-|---------------|-------------------------------------------------------------------------|
-| `students`    | id (PK), name, email (unique), phone, date_of_joining                   |
-| `courses`     | id (PK), name (unique), duration                                        |
-| `enrollments` | id (PK), student_id (FK), course_id (FK), enrollment_date               |
+| Table         | Columns                                                   |
+|---------------|-----------------------------------------------------------|
+| `students`    | id (PK), name, email (unique), phone, date_of_joining     |
+| `courses`     | id (PK), name (unique), duration                          |
+| `enrollments` | id (PK), student_id (FK), course_id (FK), enrollment_date |
 
 `enrollments` links students and courses (many-to-many) and has a unique constraint on `(student_id, course_id)`. Deleting a student removes their enrollments.
 
 ## REST API
 
-| Method | Endpoint          | Description                                   | Success |
-|--------|-------------------|-----------------------------------------------|---------|
-| GET    | `/students`       | List students (optional `?search=` by name or email) | 200 |
-| GET    | `/students/{id}`  | Get one student                               | 200     |
-| POST   | `/students`       | Create a student (optional `courseId` enrolls them) | 201 |
-| PUT    | `/students/{id}`  | Update a student                              | 200     |
-| DELETE | `/students/{id}`  | Delete a student                              | 204     |
-| GET    | `/courses`        | List courses                                  | 200     |
-| POST   | `/courses`        | Create a course                               | 201     |
-| POST   | `/enrollments`    | Enroll a student in a course                  | 201     |
-| GET    | `/enrollments`    | List all enrollments                          | 200     |
-| GET    | `/dashboard`      | Totals and course-wise enrollment counts      | 200     |
+| Method | Endpoint         | Description                                          | Success |
+|--------|------------------|------------------------------------------------------|---------|
+| GET    | `/students`      | List students (optional `?search=` by name or email) | 200     |
+| GET    | `/students/{id}` | Get one student                                      | 200     |
+| POST   | `/students`      | Create a student (optional `courseId` enrolls them)  | 201     |
+| PUT    | `/students/{id}` | Update a student                                     | 200     |
+| DELETE | `/students/{id}` | Delete a student                                     | 204     |
+| GET    | `/courses`       | List courses                                         | 200     |
+| POST   | `/courses`       | Create a course                                      | 201     |
+| POST   | `/enrollments`   | Enroll a student in a course                         | 201     |
+| GET    | `/enrollments`   | List all enrollments                                 | 200     |
+| GET    | `/dashboard`     | Totals and course-wise enrollment counts             | 200     |
 
 ### Example requests
 
+> The curl examples work in Git Bash, macOS and Linux. On Windows Command Prompt, use Postman instead.
+
 Create a course:
+
 ```bash
 curl -X POST http://localhost:8080/courses \
   -H "Content-Type: application/json" \
@@ -134,6 +141,7 @@ curl -X POST http://localhost:8080/courses \
 ```
 
 Create a student:
+
 ```bash
 curl -X POST http://localhost:8080/students \
   -H "Content-Type: application/json" \
@@ -141,6 +149,7 @@ curl -X POST http://localhost:8080/students \
 ```
 
 Enroll a student:
+
 ```bash
 curl -X POST http://localhost:8080/enrollments \
   -H "Content-Type: application/json" \
@@ -156,6 +165,7 @@ curl -X POST http://localhost:8080/enrollments \
 | 409    | Duplicate email, duplicate course name or duplicate enrollment |
 
 Validation error example:
+
 ```json
 {
   "error": "Validation failed",
@@ -187,12 +197,12 @@ The API can also be tested with Postman or the curl examples above.
 
 ## Troubleshooting
 
-| Problem                                              | Fix                                                                 |
-|------------------------------------------------------|---------------------------------------------------------------------|
-| `Could not resolve placeholder 'DB_PASSWORD'`        | Set the `DB_PASSWORD` environment variable and restart your IDE     |
-| `Access denied for user`                             | Check `DB_USER` and `DB_PASSWORD`                                   |
-| `Communications link failure`                        | Make sure MySQL is running on port 3306                             |
-| Port 8080 already in use                             | Change `server.port` in `application.properties`                    |
+| Problem                                       | Fix                                                             |
+|-----------------------------------------------|-----------------------------------------------------------------|
+| `Could not resolve placeholder 'DB_PASSWORD'` | Set the `DB_PASSWORD` environment variable and restart your IDE |
+| `Access denied for user`                      | Check `DB_USER` and `DB_PASSWORD`                               |
+| `Communications link failure`                 | Make sure MySQL is running on port 3306                         |
+| Port 8080 already in use                      | Change `server.port` in `application.properties`                |
 
 ## Future Improvements
 
